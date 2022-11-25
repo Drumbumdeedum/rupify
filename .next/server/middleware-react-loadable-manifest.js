@@ -1,1 +1,1 @@
-self.__REACT_LOADABLE_MANIFEST={"../../node_modules/@blitzjs/rpc/dist/chunks/rpc.mjs -> debug":{"id":"../../node_modules/@blitzjs/rpc/dist/chunks/rpc.mjs -> debug","files":[]}}
+self.__REACT_LOADABLE_MANIFEST={}
