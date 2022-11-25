@@ -8,11 +8,6 @@ import logo from "public/logo.png"
 import { useMutation } from "@blitzjs/rpc"
 import { Routes, BlitzPage } from "@blitzjs/next"
 
-/*
- * This file is just for a pleasant getting started page for your new app.
- * You can delete everything in here and start from scratch if you like.
- */
-
 const UserInfo = () => {
   const currentUser = useCurrentUser()
   const [logoutMutation] = useMutation(logout)
@@ -38,17 +33,37 @@ const UserInfo = () => {
   } else {
     return (
       <>
-        <div className="main-clone">
-          <Link href={Routes.SignupPage()}>
-            <a className="button small">
-              <strong>Sign Up</strong>
-            </a>
-          </Link>
-          <Link href={Routes.LoginPage()}>
-            <a className="button small">
-              <strong>Login</strong>
-            </a>
-          </Link>
+        <Link href={Routes.SignupPage()}>
+          <a className="button small">
+            <strong>Sign Up</strong>
+          </a>
+        </Link>
+        <Link href={Routes.LoginPage()}>
+          <a className="button small">
+            <strong>Login</strong>
+          </a>
+        </Link>
+      </>
+    )
+  }
+}
+
+const Home: BlitzPage = () => {
+  return (
+    <Layout title="Home">
+      <div className="container">
+        <main>
+          <div className="logo">
+            <Image src={`${logo.src}`} alt="blitzjs" width="256px" height="118px" layout="fixed" />
+          </div>
+          <p className="uppercase">
+            <strong>Congrats!</strong> Your app is ready, including user sign-up and log-in.
+          </p>
+          <div className="buttons" style={{ marginTop: "1rem", marginBottom: "1rem" }}>
+            <Suspense fallback="Loading...">
+              <UserInfo />
+            </Suspense>
+          </div>
           <p>
             <strong>
               To add a new model to your app, <br />
@@ -102,27 +117,15 @@ const UserInfo = () => {
               Discord Community
             </a>
           </div>
-        </div>
-      </>
-    )
-  }
-}
-
-const Home: BlitzPage = () => {
-  return (
-    <Layout title="Home">
-      <div className="container">
-        <main>
-          <div className="buttons" style={{ marginTop: "1rem", marginBottom: "1rem" }}>
-            <Suspense fallback="Loading...">
-              <UserInfo />
-            </Suspense>
-          </div>
         </main>
 
         <footer>
-          <a>
-            FOOTER
+          <a
+            href="https://blitzjs.com?utm_source=blitz-new&utm_medium=app-template&utm_campaign=blitz-new"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Powered by Blitz.js
           </a>
         </footer>
 
@@ -150,7 +153,7 @@ const Home: BlitzPage = () => {
             align-items: center;
           }
 
-          main, main-clone {
+          main {
             padding: 5rem 0;
             flex: 1;
             display: flex;
