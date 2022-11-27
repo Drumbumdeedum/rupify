@@ -11,11 +11,10 @@ type SignupFormProps = {
 export const SignupForm = (props: SignupFormProps) => {
   const [signupMutation] = useMutation(signup)
   return (
-    <div>
-      <h1>Create an Account</h1>
-
+    <div className="space-y-6">
+      <h1 className="font-mono text-center">Sign up with Email</h1>
       <Form
-        submitText="Create Account"
+        submitText="CREATE ACCOUNT"
         schema={Signup}
         initialValues={{ email: "", password: "" }}
         onSubmit={async (values) => {

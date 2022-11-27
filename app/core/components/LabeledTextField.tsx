@@ -19,11 +19,7 @@ export const LabeledTextField = forwardRef<HTMLInputElement, LabeledTextFieldPro
       input,
       meta: { touched, error, submitError, submitting },
     } = useField(name, {
-      parse:
-        props.type === "number"
-          ? (Number as any)
-          : // Converting `""` to `null` ensures empty values will be set to null in the DB
-            (v) => (v === "" ? null : v),
+      parse: props.type === "number" ? (Number as any) : (v) => (v === "" ? null : v),
       ...fieldProps,
     })
 
@@ -31,9 +27,15 @@ export const LabeledTextField = forwardRef<HTMLInputElement, LabeledTextFieldPro
 
     return (
       <div {...outerProps}>
-        <label {...labelProps}>
+        <label className="flex flex-col text-sm text-neutral-600 font-mono" {...labelProps}>
           {label}
-          <input {...input} disabled={submitting} {...props} ref={ref} />
+          <input
+            className="p-2 outline-none border border-1 border-neutral-300 hover:border-neutral-500 hover:border-2 focus:border-3 focus:border-black"
+            {...input}
+            disabled={submitting}
+            {...props}
+            ref={ref}
+          />
         </label>
 
         {touched && normalizedError && (
@@ -41,23 +43,6 @@ export const LabeledTextField = forwardRef<HTMLInputElement, LabeledTextFieldPro
             {normalizedError}
           </div>
         )}
-
-        <style jsx>{`
-          label {
-            display: flex;
-            flex-direction: column;
-            align-items: start;
-            font-size: 1rem;
-          }
-          input {
-            font-size: 1rem;
-            padding: 0.25rem 0.5rem;
-            border-radius: 3px;
-            border: 1px solid purple;
-            appearance: none;
-            margin-top: 0.5rem;
-          }
-        `}</style>
       </div>
     )
   }

@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -21,8 +21,13 @@ model User {
   hashedPassword String?
   role           String   @default("USER")
 
-  tokens   Token[]
-  sessions Session[]
+  tokens          Token[]
+  sessions        Session[]
+
+  transactions    Transaction[]
+
+  incomes         Income[]
+  expenses        Expense[]
 }
 
 model Session {
@@ -41,13 +46,11 @@ model Session {
 }
 
 model Token {
-  id          Int      @id @default(autoincrement())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id          Int       @id @default(autoincrement())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
   hashedToken String
-  type        String
-  // See note below about TokenType enum
-  // type        TokenType
+  type        TokenType
   expiresAt   DateTime
   sentTo      String
 
@@ -57,9 +60,84 @@ model Token {
   @@unique([hashedToken, type])
 }
 
-// NOTE: It's highly recommended to use an enum for the token type
-//       but enums only work in Postgres.
-//       See: https://blitzjs.com/docs/database-overview#switch-to-postgre-sql
-// enum TokenType {
-//   RESET_PASSWORD
-// }
+enum TokenType {
+  RESET_PASSWORD
+}
+
+model Transaction {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String?
+  amount    Int
+  note      String?
+
+  type     TransactionType
+  category TransactionCategory
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+enum TransactionCategory {
+  INCOME_SALARY
+
+  EXPENSE_GROCERIES
+  EXPENSE_BILL
+  EXPENSE_SUBSCRIBTION
+  EXPENSE_HOSPITALITY
+  EXPENSE_VEHICLE
+  EXPENSE_PUBLIC_TRANSPORT
+  EXPENSE_PET
+  EXPENSE_OTHER
+}
+
+model Income {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  category  IncomeCategory
+
+  name      String
+  note      String
+  amount    Int
+
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+}
+
+enum IncomeCategory {
+  SALARY
+}
+
+model Expense {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  category  ExpenseCategory
+
+  name      String
+  note      String
+  amount    Int
+
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+}
+
+enum ExpenseCategory {
+  GROCERIES
+  BILL
+  SUBSCRIBTION
+  HOSPITALITY
+  VEHICLE
+  PUBLIC_TRANSPORT
+  PET
+  OTHER
+}
